@@ -10,7 +10,10 @@ class Solution
 public:
 	int myAtoi(std::string str);					// 字符串转int型
 	bool isPalindrome(int x);						// 判断int型数据是否为回文
-	bool isMatch(std::string s, std::string p);		// 字符串模式匹配
+	bool isMatch(std::string s, std::string p);		// 字符串模式匹配 使用递归方式 待完成
+	int maxArea(std::vector<int>& height);			// 输入n个非负数，输出两个数组成的最大容积
+	std::string intToRoman(int num);				// 整型转罗马数字
+	int romanToInt(std::string s);					// 罗马数字转整型
 };
 
 int Solution::myAtoi(std::string str)
@@ -85,79 +88,58 @@ bool Solution::isPalindrome(int x)
 
 bool Solution::isMatch(std::string s, std::string p)
 {
-	bool res = false;
-	size_t pIndex = 0;
-	char lastChar;
-	bool keep = false;
-	size_t i = 0;
+	return false;
+}
 
-	if (s.length() == 0 || p.length() == 0) return false;
-	for (i = 0; i < s.length(); i++)
-	{
-		if (!keep && pIndex >= p.length())
-		{
-			res = false;
-			break;
-		}
-		if (p[pIndex] == '.')
-		{
-			pIndex++;
-			continue;
-		}
-		else if (p[pIndex] == '*')
-		{
-			lastChar = p[pIndex - 1];
-			pIndex++;
-			keep = true;
-			if (lastChar == '.')
-			{
-				pIndex++;
-				continue;
-			}
-		}
-		else
-		{
-			if (keep && s[i] == lastChar) continue;
-			else
-			{
-				keep = false;
-				if (s[i] != p[pIndex])
-				{
-					if (pIndex + 1 < p.length())
-					{
-						if (p[pIndex + 1] == '*')
-						{
-							pIndex += 2;
-							continue;
-						}
-						else
-						{
-							res = false;
-							break;
-						}
-					}
-					else
-					{
-						res = false;
-						break;
-					}
-				}
-				else
-				{
-					pIndex++;
-				}
-			}
-		}
-		
+int Solution::maxArea(std::vector<int>& height)
+{		
+	int m = 0;
+	for (int i = 0, j = height.size() - 1; i < j;) {
+		m = std::max(m, (j - i) * std::min(height[i], height[j]));
+		height[i] < height[j] ? i++ : j--;
 	}
-	if (i == s.length())
+	return m;
+}
+
+std::string Solution::intToRoman(int num)
+{
+	std::string res;
+	int c[] = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+	std::string str[] = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+	int n = 0;
+	for (int i = 0; num && i < 13; i++) {
+		n = num / c[i];
+		for (int j = 0; j < n; j++) {
+			res += str[i];
+		}
+		num -= c[i] * n;
+	}
+	return res;
+}
+
+int Solution::romanToInt(std::string s)
+{
+	int res = 0;
+	int c1[] = { 900, 400, 90, 40, 9, 4 };
+	std::string str1[] = { "CM", "CD", "XC", "XL", "IX", "IV"};
+	int c2[] = { 1000, 500, 100, 50, 10, 5, 1 };
+	std::string str2[] = { "M", "D", "C", "L", "X", "V", "I" };
+	for (size_t i = 0; i < 6; i++)
 	{
-		for (size_t j = pIndex; j < p.length(); j++)
+		while (s.find(str1[i]) != std::string::npos)
 		{
-			if (p[j] != '*')
-			{
-				return false;
-			}
+			size_t pos = s.find(str1[i]);
+			res += c1[i];
+			s = s.substr(0, pos) + s.substr(pos + 2, s.length() - pos - 2);
+		}
+	}
+	for (size_t i = 0; i < 7; i++)
+	{
+		while (s.find(str2[i]) != std::string::npos)
+		{
+			size_t pos = s.find(str2[i]);
+			res += c2[i];
+			s = s.substr(0, pos) + s.substr(pos + 1, s.length() - pos - 2);
 		}
 	}
 	return res;
@@ -167,9 +149,8 @@ bool Solution::isMatch(std::string s, std::string p)
 int main()
 {
 	Solution solution;
-	std::string source = "aab";
-	std::string pattern = "c*a*b*";
-	std::cout << solution.isMatch(source, pattern) << std::endl;
+	std::string str = "MCMXCIV";
+	solution.romanToInt(str);
 	return 0;
 }
 
