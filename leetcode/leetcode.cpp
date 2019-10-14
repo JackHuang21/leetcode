@@ -3,6 +3,7 @@
 #include <vector>
 #include <climits>
 #include <algorithm>
+#include <map>
 
 
 class Solution 
@@ -15,7 +16,7 @@ public:
 	std::string intToRoman(int num);									// 整型转罗马数字
 	int romanToInt(std::string s);										// 罗马数字转整型
 	std::string longestCommonPrefix(std::vector<std::string>& strs);	// 查找最长相同前缀
-	std::vector<std::vector<int>> threesum(std::vector<int>& nums);		// 
+	std::vector<std::vector<int>> threeSum(std::vector<int>& nums);		// 
 };
 
 int Solution::myAtoi(std::string str)
@@ -176,17 +177,24 @@ std::string Solution::longestCommonPrefix(std::vector<std::string>& strs)
 	return res;
 }
 
-std::vector<std::vector<int>> Solution::threesum(std::vector<int>& nums)
+std::vector<std::vector<int>> Solution::threeSum(std::vector<int>& nums)
 {
-	return std::vector<std::vector<int>>();
+	std::vector<std::vector<int>> res;
+	std::map<int, int> index;
+	for (size_t i = 0; i < nums.size(); i++)
+	{
+		index[nums[i]] ++;
+	}
+
+	return res;
 }
 
 
 int main()
 {
 	Solution solution;
-	std::string str = "MCMXCIV";
-	solution.romanToInt(str);
+	std::vector<int> nums = { -1, 0, 1, 2, -1, -4 };
+	solution.threeSum(nums);
 	return 0;
 }
 
