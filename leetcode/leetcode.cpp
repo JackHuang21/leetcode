@@ -8,12 +8,14 @@
 class Solution 
 {
 public:
-	int myAtoi(std::string str);					// 字符串转int型
-	bool isPalindrome(int x);						// 判断int型数据是否为回文
-	bool isMatch(std::string s, std::string p);		// 字符串模式匹配 使用递归方式 待完成
-	int maxArea(std::vector<int>& height);			// 输入n个非负数，输出两个数组成的最大容积
-	std::string intToRoman(int num);				// 整型转罗马数字
-	int romanToInt(std::string s);					// 罗马数字转整型
+	int myAtoi(std::string str);										// 字符串转int型
+	bool isPalindrome(int x);											// 判断int型数据是否为回文
+	bool isMatch(std::string s, std::string p);							// 字符串模式匹配 使用递归方式 待完成
+	int maxArea(std::vector<int>& height);								// 输入n个非负数，输出两个数组成的最大容积
+	std::string intToRoman(int num);									// 整型转罗马数字
+	int romanToInt(std::string s);										// 罗马数字转整型
+	std::string longestCommonPrefix(std::vector<std::string>& strs);	// 查找最长相同前缀
+	std::vector<std::vector<int>> threesum(std::vector<int>& nums);		// 
 };
 
 int Solution::myAtoi(std::string str)
@@ -139,10 +141,44 @@ int Solution::romanToInt(std::string s)
 		{
 			size_t pos = s.find(str2[i]);
 			res += c2[i];
-			s = s.substr(0, pos) + s.substr(pos + 1, s.length() - pos - 2);
+			s = s.substr(0, pos) + s.substr(pos + 1, s.length() - pos - 1);
 		}
 	}
 	return res;
+}
+
+std::string Solution::longestCommonPrefix(std::vector<std::string>& strs)
+{
+	std::string res;
+	if (strs.empty()) return res;
+	size_t minLen = strs[0].length();
+	int minLenIndex = 0;
+	// 找到最短的字符串
+	for (size_t i = 0; i < strs.size(); i++)
+	{
+		if (strs[i].length() < minLen)
+		{
+			minLen = strs[i].length();
+			minLenIndex = i;
+		}
+	}
+	for (size_t i = 0; i < strs[minLenIndex].length(); i++)
+	{
+		char temp = strs[minLenIndex][i];
+		size_t j = 0;
+		for (j = 0; j < strs.size(); j++)
+		{
+			if (strs[j][i] != temp) break;
+		}
+		if (j >= strs.size()) res.push_back(temp);
+		else break;
+	}
+	return res;
+}
+
+std::vector<std::vector<int>> Solution::threesum(std::vector<int>& nums)
+{
+	return std::vector<std::vector<int>>();
 }
 
 
